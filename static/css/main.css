@@ -1,0 +1,39 @@
+img {
+    pointer-events: none;
+}
+
+.controls {
+    border-radius: 10px;
+    height: 200px;
+    width: 200px}
+
+#video {
+    border-radius: 30px;
+    height: 600px;
+    width: 900px;
+    padding: 10px;
+}
+
+.controls_view {
+    padding: 10px;
+}
+
+#web_dist{
+    padding: 10px;
+}
+
+.sensors {
+    padding: 10px;
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed; /*Optional*/
+    border-spacing: 10px; /*Optional*/
+    font-size: 60px;
+    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif
+}
+
+.column {
+    border-radius: 10px;
+    display: table-cell;
+    background-color: GrayText; /*Optional*/
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html leng="en">
+  <head>
+      <title>devastator</title>
+      <meta charset="UTF-8">
+      <link href="/static/css/main.css" rel="stylesheet">
+      <script src="/static/js/robot.js"></script>
+  </head>
+  <body onload="init()">
+    <div id="web_dist" align="center">
+        <!--<div align="center"><img id="video" alt="" src="http://10.7.10.17:8000/stream.mjpg"></div>-->
+        <div><img id="video" alt="" src="/static/images/1234.jpg"></div>
+        <div class="sensors" align="center">
+            <div class="column" id="ping">ping: </div>
+            <div class="column" id="distance">distanse:  </div>
+        </div>
+    </div>
+    <div class="controls_view">
+        <div align="middle">
+            <button id="forward"><img class="controls" alt="" src="/static/images/forward.png"></button>
+        </div>
+        <div align="middle">
+            <button id="left"><img class="controls" alt="" src="/static/images/left.png"></button>
+            <button id="stop"><img class="controls" alt="" src="/static/images/stop.png"></button>
+            <button id="right"><img class="controls" alt="" src="/static/images/right.png"></button>
+        </div>
+        <div align="middle">
+            <button id="backward"><img class="controls" alt="" src="/static/images/reverse.png"></button>
+        </div>
+    </div>
+  </body>
+</html>
