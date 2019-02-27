@@ -5,7 +5,6 @@ from gpiozero import Robot, RGBLED
 from time import time, sleep
 import time
 
-app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
 GPIO_TRIGGER = 24
 GPIO_ECHO = 18
@@ -52,6 +51,9 @@ def m_distance():
     time_elapsed = stop_time - start_time
     distance = (time_elapsed * 34300) / 2
     return distance
+
+
+app = Flask(__name__)
 
 
 @app.route('/')
