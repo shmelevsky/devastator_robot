@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, jsonify, request
+from werkzeug.contrib.fixers import ProxyFix
 import subprocess
 import RPi.GPIO as GPIO
 from gpiozero import Robot, RGBLED
@@ -102,6 +103,7 @@ def get_distance():
     if request.method == 'POST':
         return jsonify(int(m_distance()))
 
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
     app.debug = False
