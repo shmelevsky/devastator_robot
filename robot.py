@@ -98,7 +98,7 @@ def get_ping():
 @app.route('/get_distance', methods=['POST'])
 def get_distance():
     if request.method == 'POST':
-        return jsonify(m_distance())
+        return jsonify(int(m_distance()))
 
 
 if __name__ == '__main__':
