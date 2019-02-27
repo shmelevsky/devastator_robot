@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, jsonify, request
 import subprocess
 import RPi.GPIO as GPIO
 from gpiozero import Robot, RGBLED
-from time import sleep
+from time import time, sleep
+import time
 
 app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
