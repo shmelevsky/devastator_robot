@@ -15,6 +15,8 @@ function init() {
     var button_backward = document.getElementById("backward");
     button_backward.addEventListener("touchstart", backward, false);
     button_backward.addEventListener("touchend", stop, false);
+    var button_stop = document.getElementById("stop");
+    button_stop.addEventListener("touchstart", stop, false);
 
     setInterval(function() {
         get_data('/get_ping', 'ping');
@@ -48,7 +50,7 @@ function get_data(url,selector_id) {
 
     var xmlhttp2;
     xmlhttp2=new XMLHttpRequest();
-    xmlhttp2.open('POST', url);
+    xmlhttp2.open('POST', url, true);
     xmlhttp2.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
     xmlhttp2.onload = function () {
         if (xmlhttp2.status === 200) {

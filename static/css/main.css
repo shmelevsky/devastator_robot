@@ -25,9 +25,9 @@ img {
 .sensors {
     padding: 10px;
     display: table;
-    width: 100%; /*Optional*/
-    table-layout: fixed; /*Optional*/
-    border-spacing: 10px; /*Optional*/
+    width: 97%;
+    table-layout: fixed;
+    border-spacing: 10px;
     font-size: 60px;
     font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif
 }
@@ -35,5 +35,5 @@ img {
 .column {
     border-radius: 10px;
     display: table-cell;
-    background-color: GrayText; /*Optional*/
+    background-color: GrayText;
 }
