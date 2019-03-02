@@ -3,9 +3,19 @@ img {
 }
 
 .controls {
-    border-radius: 10px;
     height: 200px;
-    width: 200px}
+    width: 200px;
+    border: 10px;
+}
+
+#speed {
+    height: 204px;
+    width: 217px;
+    vertical-align: text-bottom;
+    font-size: 170px;
+    font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+    color: red;
+}
 
 #video {
     border-radius: 30px;
