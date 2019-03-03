@@ -86,6 +86,12 @@ def backward():
     return Response(status=200)
 
 
+@app.route('/stop')
+def stop():
+    robot.stop()
+    return Response(status=200)
+
+
 @app.route('/get_ping', methods=['POST'])
 def get_ping():
     if request.method == 'POST':
