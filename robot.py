@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, jsonify, request
+from flask import Flask, render_template, url_for, jsonify, request, Response
 from werkzeug.contrib.fixers import ProxyFix
 import subprocess
 import RPi.GPIO as GPIO
@@ -65,31 +65,25 @@ def index():
 @app.route('/forward')
 def forward():
     robot.forward(speed=speed)
-    return redirect('/')
+    return Response(status=200)
 
 
 @app.route('/left')
 def left():
     robot.left(speed=speed)
-    return redirect('/')
+    return Response(status=200)
 
 
 @app.route('/right')
 def right():
     robot.right(speed=speed)
-    return redirect('/')
+    return Response(status=200)
 
 
 @app.route('/backward')
 def backward():
     robot.backward(speed=speed)
-    return redirect('/')
-
-
-@app.route('/stop')
-def stop():
-    robot.stop()
-    return redirect('/')
+    return Response(status=200)
 
 
 @app.route('/get_ping', methods=['POST'])
@@ -102,6 +96,30 @@ def get_ping():
 def get_distance():
     if request.method == 'POST':
         return jsonify(int(m_distance()))
+
+
+@app.route('/transmisson', methods=['POST', 'GET'])
+def transmission():
+    global speed
+    speeds = {
+        1: 0.25,
+        2: 0.5,
+        3: 0.75,
+        4: 1
+    }
+    if request.method == 'POST':
+        speed = speeds[int(request.json['speed'])]
+        return Response(status=200)
+    if request.method == 'GET':
+        speeds = dict(map(reversed, speeds.items()))
+        return jsonify(speeds[speed])
+
+
+@app.route('/shutdown')
+def shutdown():
+    print('shutdown')
+    return Response(status=200)
+
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 

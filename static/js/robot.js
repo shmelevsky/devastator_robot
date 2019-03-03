@@ -15,9 +15,7 @@ function init() {
     var button_backward = document.getElementById("backward");
     button_backward.addEventListener("touchstart", backward, false);
     button_backward.addEventListener("touchend", stop, false);
-    var button_stop = document.getElementById("stop");
-    button_stop.addEventListener("touchstart", stop, false);
-
+    get_cur_speed();
     setInterval(function() {
         get_data('/get_ping', 'ping');
         get_data('/get_distance', 'distance' )
@@ -61,4 +59,34 @@ function get_data(url,selector_id) {
             }
     };
     xmlhttp2.send();
+}
+
+function speed_changer() {
+    var speed = document.getElementById('speed');
+    if (Number(speed.innerHTML) === 4) {
+        speed.innerHTML = '1';
+    } else {
+        speed.innerHTML = Number(speed.innerHTML) + 1;
+    }
+    var xmlhttp3;
+    xmlhttp3 = new  XMLHttpRequest();
+    xmlhttp3.open('POST', '/transmisson', true);
+    xmlhttp3.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xmlhttp3.send(JSON.stringify({'speed': speed.innerHTML}));
+}
+
+function get_cur_speed() {
+    var xmlhttp4;
+    xmlhttp4 = new XMLHttpRequest();
+    xmlhttp4.open('GET', '/transmisson', true);
+    xmlhttp4.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xmlhttp4.onload = function () {
+        if (xmlhttp4.status === 200) {
+            var resp = JSON.parse(xmlhttp4.responseText);
+            document.getElementById('speed').innerHTML = resp;
+        } else if (xmlhttp2.status !== 200) {
+            console.log('Request failed.  Returned status of ' + xmlhttp4.status);
+        }
+    };
+    xmlhttp4.send();
 }
