@@ -17,20 +17,20 @@
     </div>
     <div class="controls_view">
         <div align="middle">
-            <button id="forward"><img class="controls" alt="" src="/static/images/forward.png"></button>
+            <button class="ctrl" id="forward"><img class="controls" alt="" src="/static/images/forward.png"></button>
         </div>
         <div align="middle">
-            <button id="left"><img class="controls" alt="" src="/static/images/left.png"></button>
-            <button onclick="speed_changer()" id="speed"></button>
-            <button id="right"><img class="controls" alt="" src="/static/images/right.png"></button>
+            <button class="ctrl" id="left"><img class="controls" alt="" src="/static/images/left.png"></button>
+            <button class="ctrl" onclick="speed_changer()" id="speed"></button>
+            <button class="ctrl" id="right"><img class="controls" alt="" src="/static/images/right.png"></button>
         </div>
         <div align="middle">
-            <button id="backward"><img class="controls" alt="" src="/static/images/reverse.png"></button>
+            <button class="ctrl" id="backward"><img class="controls" alt="" src="/static/images/reverse.png"></button>
         </div>
     </div>
-    <!--<div>-->
-        <!--<button type="button" onclick="window.location.href = '{{ url_for('shutdown') }}'" >-->
-            <!--<img src="/static/images/Power-Button-300x300.jpg"></button>-->
-    <!--</div>-->
+    <div align="center" class="absolute">
+        <a href="/power" class="bot_control">power</a>
+        <button class="bot_control">color</button>
+    </div>
   </body>
 </html>
