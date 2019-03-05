@@ -5,7 +5,7 @@ img {
 .controls {
     height: 200px;
     width: 200px;
-    border: 10px;
+
 }
 
 #speed {
@@ -15,29 +15,30 @@ img {
     font-size: 170px;
     font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
     color: red;
+    border: 3px solid seagreen;
 }
 
 #video {
     border-radius: 30px;
-    height: 600px;
-    width: 900px;
-    padding: 10px;
+    height: 714px;
+    width: 920px;
 }
 
 .controls_view {
-    padding: 10px;
+    padding-top: 20px;
 }
 
 #web_dist{
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .sensors {
-    padding: 10px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-right: 5px;
     display: table;
-    width: 97%;
+    width: 98%;
     table-layout: fixed;
-    border-spacing: 10px;
     font-size: 60px;
     font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif
 }
@@ -45,5 +46,10 @@ img {
 .column {
     border-radius: 10px;
     display: table-cell;
-    background-color: GrayText;
+    background-color: #45719e;
+    border: 3px solid #000000;
 }
+
+/*body {*/
+    /*background-color: darkgrey;*/
+/*}*/

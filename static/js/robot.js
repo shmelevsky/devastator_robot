@@ -84,7 +84,7 @@ function get_cur_speed() {
         if (xmlhttp4.status === 200) {
             var resp = JSON.parse(xmlhttp4.responseText);
             document.getElementById('speed').innerHTML = resp;
-        } else if (xmlhttp2.status !== 200) {
+        } else if (xmlhttp4.status !== 200) {
             console.log('Request failed.  Returned status of ' + xmlhttp4.status);
         }
     };
