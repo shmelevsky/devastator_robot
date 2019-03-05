@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 from gpiozero import Robot, RGBLED
 from time import time, sleep
 import time
+import os
 
 GPIO.setmode(GPIO.BCM)
 GPIO_TRIGGER = 24
@@ -121,9 +122,16 @@ def transmission():
         return jsonify(speeds[speed])
 
 
-@app.route('/shutdown')
+@app.route('/power')
+def power():
+    return render_template('power.html')
+
+
+@app.route('/shutdown', methods=['POST', 'GET'])
 def shutdown():
-    print('shutdown')
+    if request.method == 'POST':
+        if request.form['shutdown'] == 'do_shutdown':
+            os.system(b'/sbin/shutdown now')
     return Response(status=200)
 
 
