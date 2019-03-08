@@ -15,6 +15,7 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 robot = Robot(left=(16, 12), right=(21, 20))
 led = RGBLED(red=27, green=22, blue=17)
 speed = 0.5
+cur_color = 'green'
 
 
 def led_demo():
@@ -32,6 +33,15 @@ def led_demo():
 led_demo()
 led.green = 1
 
+
+def set_new_color():
+    colors = {
+        'red': (1, 0, 0),
+        'green': (0, 1, 0),
+        'blue': (0, 0, 1),
+        'yellow': (1, 1, 0)
+    }
+    led.color = colors[cur_color]
 
 def ping_server():
     cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  82.193.109.230']
@@ -120,6 +130,17 @@ def transmission():
     if request.method == 'GET':
         speeds = dict(map(reversed, speeds.items()))
         return jsonify(speeds[speed])
+
+
+@app.route('/set_color', methods=['POST', 'GET'])
+def set_color():
+    global cur_color
+    if request.method == 'POST':
+        cur_color = request.json['cur_color']
+        set_new_color()
+    if request.method == 'GET':
+        return jsonify(cur_color)
+    return Response(status=200)
 
 
 @app.route('/power')
