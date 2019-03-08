@@ -94,7 +94,7 @@ function get_cur_speed() {
 cur_color = 'green';
 function set_color() {
     var xhtp;
-    var xhtp = new XMLHttpRequest();
+    xhtp = new XMLHttpRequest();
     var color_el = document.getElementById('set_color');
     if (this.cur_color === 'green') {
         color_el.style.backgroundColor = "blue";
@@ -122,7 +122,7 @@ function get_cur_color() {
     xhtp.onload = function () {
         if (xhtp.status === 200) {
             var resp = JSON.parse(xhtp.responseText);
-            var color_el = document.getElementById('set_color').style.backgroundColor = resp;
+            document.getElementById('set_color').style.backgroundColor = resp;
         } else if (xhtp.status !== 200) {
             console.log('Request failed.  Returned status of ' + xhtp.status);
         }
