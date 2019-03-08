@@ -1,7 +1,6 @@
-
 var xmlhttp;
-xmlhttp=new XMLHttpRequest();
 
+xmlhttp=new XMLHttpRequest();
 function init() {
     var button_forward = document.getElementById("forward");
     button_forward.addEventListener("touchstart", forward, false);
@@ -16,12 +15,13 @@ function init() {
     button_backward.addEventListener("touchstart", backward, false);
     button_backward.addEventListener("touchend", stop, false);
     get_cur_speed();
+    get_cur_color();
     setInterval(function() {
         get_data('/get_ping', 'ping');
         get_data('/get_distance', 'distance' )
     }, 2000);
-}
 
+}
 function forward() {
     xmlhttp.open("GET","/forward",true);
     xmlhttp.send();
@@ -41,11 +41,11 @@ function backward() {
 function stop() {
     xmlhttp.open("GET","/stop", true);
     xmlhttp.send();
+
+
 }
 
-
 function get_data(url,selector_id) {
-
     var xmlhttp2;
     xmlhttp2=new XMLHttpRequest();
     xmlhttp2.open('POST', url, true);
@@ -56,11 +56,11 @@ function get_data(url,selector_id) {
             document.getElementById(selector_id).innerHTML = selector_id+": "+response;
         } else if (xmlhttp2.status !== 200) {
             console.log('Request failed.  Returned status of ' + xmlhttp2.status);
-            }
+        }
     };
     xmlhttp2.send();
-}
 
+}
 function speed_changer() {
     var speed = document.getElementById('speed');
     if (Number(speed.innerHTML) === 4) {
@@ -73,8 +73,8 @@ function speed_changer() {
     xmlhttp3.open('POST', '/transmisson', true);
     xmlhttp3.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
     xmlhttp3.send(JSON.stringify({'speed': speed.innerHTML}));
-}
 
+}
 function get_cur_speed() {
     var xmlhttp4;
     xmlhttp4 = new XMLHttpRequest();
@@ -89,4 +89,43 @@ function get_cur_speed() {
         }
     };
     xmlhttp4.send();
+
+}
+cur_color = 'green';
+function set_color() {
+    var xhtp;
+    var xhtp = new XMLHttpRequest();
+    var color_el = document.getElementById('set_color');
+    if (this.cur_color === 'green') {
+        color_el.style.backgroundColor = "blue";
+        this.cur_color = 'blue'
+    } else if (this.cur_color === 'blue') {
+        color_el.style.backgroundColor = 'red';
+        this.cur_color = 'red'
+    } else if (this.cur_color === 'red') {
+        color_el.style.backgroundColor ='yellow';
+        this.cur_color = 'yellow'
+    } else if (this.cur_color === 'yellow') {
+        color_el.style.backgroundColor = 'green';
+        this.cur_color = 'green'
+    }
+    xhtp.open('POST', '/set_color', true);
+    xhtp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xhtp.send(JSON.stringify({'cur_color': this.cur_color}));
+}
+
+function get_cur_color() {
+    var xhtp;
+    xhtp = new XMLHttpRequest();
+    xhtp.open('GET', '/set_color', true);
+    xhtp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xhtp.onload = function () {
+        if (xhtp.status === 200) {
+            var resp = JSON.parse(xhtp.responseText);
+            var color_el = document.getElementById('set_color').style.backgroundColor = resp;
+        } else if (xhtp.status !== 200) {
+            console.log('Request failed.  Returned status of ' + xhtp.status);
+        }
+    };
+    xhtp.send();
 }
