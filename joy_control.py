@@ -2,8 +2,7 @@ import pygame
 from time import sleep
 from gpiozero import Robot
 
-pygame.init()
-#pygame.display.init()
+pygame.display.init()
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
