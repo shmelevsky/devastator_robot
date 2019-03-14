@@ -1,7 +1,7 @@
 import pygame
 from time import sleep
 from gpiozero import Robot
-
+import sys
 sys.stdout = sys.stderr
 
 pygame.init()
