@@ -27,12 +27,11 @@ pygame.init()
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
-terminate = False
-updown = False
-leftright =False
 
 
 def joy():
+    updown = False
+    leftright = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
