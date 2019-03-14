@@ -6,6 +6,9 @@ from gpiozero import Robot, RGBLED
 from time import time, sleep
 import time
 import os
+import pygame
+import threading
+
 
 GPIO.setmode(GPIO.BCM)
 GPIO_TRIGGER = 24
@@ -16,6 +19,53 @@ robot = Robot(left=(16, 12), right=(21, 20))
 led = RGBLED(red=27, green=22, blue=17)
 speed = 0.5
 cur_color = 'green'
+
+
+pygame.init()
+
+
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
+terminate = False
+updown = False
+leftright =False
+
+
+def joy():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYAXISMOTION:
+                position = float('%.2f' % event.value)
+                if event.axis == 3:
+                    if not leftright:
+                        if position != 0.0:
+                            updown = True
+                        if position < 0:
+                            robot.forward(speed=position*-1)
+                        elif position > 0:
+                            robot.backward(speed=position)
+                        elif position == 0.0:
+                            updown = False
+                            robot.stop()
+                elif event.axis == 0:
+                    if not updown:
+                        if position != 0.0:
+                            leftright = True
+                        if position < 0:
+                            robot.left(speed=position*-1)
+                        elif position > 0:
+                            robot.right(speed=position)
+                        elif position == 0.0:
+                            leftright = False
+                            robot.stop()
+
+        sleep(0.01)
+
+
+tread = threading.Thread(name='joy', target=joy)
+tread.setDaemon(True)
+tread.start()
 
 
 def led_demo():
