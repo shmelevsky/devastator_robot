@@ -21,9 +21,22 @@ speed = 0.5
 cur_color = 'green'
 
 
+def led_demo():
+    for i in range(3):
+        for n in range(101):
+            led.green = n / 100
+            sleep(0.01)
+        if i == 2:
+            break
+        for n in reversed(range(101)):
+            led.green = n / 100
+            sleep(0.01)
+
+
+led_demo()
+led.green = 1
+
 pygame.init()
-
-
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
@@ -65,22 +78,6 @@ def joy():
 tread = threading.Thread(name='joy', target=joy)
 tread.setDaemon(True)
 tread.start()
-
-
-def led_demo():
-    for i in range(3):
-        for n in range(101):
-            led.green = n / 100
-            sleep(0.01)
-        if i == 2:
-            break
-        for n in reversed(range(101)):
-            led.green = n / 100
-            sleep(0.01)
-
-
-led_demo()
-led.green = 1
 
 
 def set_new_color():
