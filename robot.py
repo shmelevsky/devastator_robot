@@ -90,7 +90,7 @@ def set_new_color():
     led.color = colors[cur_color]
 
 def ping_server():
-    cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  82.193.109.230']
+    cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  10.7.10.1']
     out = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ping = out.communicate()[1:][0].decode('UTF-8').split(':')[1]
     return ping
