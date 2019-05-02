@@ -297,7 +297,7 @@ def shutdown():
 def servo():
     if request.method == 'POST':
         direction = request.json['servo']
-        servo_motion(direction)
+        servo_motion.change_position(direction)
         return Response(status=200)
 
 
