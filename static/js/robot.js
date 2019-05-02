@@ -21,6 +21,7 @@ function init() {
         get_data('/get_distance', 'distance' )
     }, 2000);
 
+
 }
 function forward() {
     xmlhttp.open("GET","/forward",true);
@@ -129,3 +130,13 @@ function get_cur_color() {
     };
     xhtp.send();
 }
+
+function servo_activate(position) {
+    var xmlhttp;
+    xmlhttp = new  XMLHttpRequest();
+    xmlhttp.open('POST', '/servo', true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xmlhttp.send(JSON.stringify({'servo': position}));
+};
+
+

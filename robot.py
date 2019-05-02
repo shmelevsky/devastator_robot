@@ -17,6 +17,97 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 robot = Robot(left=(16, 12), right=(21, 20))
 led = RGBLED(red=27, green=22, blue=17)
+
+
+servoPIN_h = 8
+servoPIN_v = 25
+
+GPIO.setup(servoPIN_h, GPIO.OUT)
+GPIO.setup(servoPIN_v, GPIO.OUT)
+
+
+class ServoMotion:
+    positions_horizontal = {
+        1: 2.5,
+        2: 4.5,
+        3: 7,
+        4: 9.5,
+        5: 11.5,
+    }
+
+    positions_vertical = {
+        1: 4,
+        2: 7,
+        3: 8.7,
+        4: 9.8
+    }
+
+    def __init__(self):
+        self.cur_h_position = 3
+        self.cur_v_position = 3
+        servo_v = GPIO.PWM(servoPIN_v, 50)
+        servo_v.start(self.positions_vertical[self.cur_v_position])
+        sleep(0.3)
+        servo_v.stop()
+        del servo_v
+        servo_h = GPIO.PWM(servoPIN_h, 50)
+        servo_h.start(self.positions_horizontal[self.cur_h_position])
+        sleep(0.3)
+        servo_h.stop()
+        del servo_h
+
+    def change_position(self, button_direction):
+        if button_direction == 'right':
+            if self.cur_h_position == 1:
+                return
+            else:
+                self.cur_h_position -= 1
+                servo_h = GPIO.PWM(servoPIN_h, 50)
+                servo_h.start(self.positions_horizontal[self.cur_h_position])
+                sleep(0.3)
+                servo_h.stop()
+                del servo_h
+                return
+        elif button_direction == 'left':
+            if self.cur_h_position == 5:
+                return
+            else:
+                self.cur_h_position += 1
+                servo_h = GPIO.PWM(servoPIN_h, 50)
+                servo_h.start(self.positions_horizontal[self.cur_h_position])
+                sleep(0.3)
+                servo_h.stop()
+                del servo_h
+                return
+        elif button_direction == 'up':
+            if self.cur_v_position == 1:
+                return
+            else:
+                self.cur_v_position -= 1
+                servo_v = GPIO.PWM(servoPIN_v, 50)
+                servo_v.start(self.positions_vertical[self.cur_v_position])
+                sleep(0.3)
+                servo_v.stop()
+                del servo_v
+                return
+        elif button_direction == 'down':
+            if self.cur_v_position == 4:
+                return
+            else:
+                self.cur_v_position += 1
+                servo_v = GPIO.PWM(servoPIN_v, 50)
+                servo_v.start(self.positions_vertical[self.cur_v_position])
+                sleep(0.3)
+                servo_v.stop()
+                del servo_v
+                return
+        elif button_direction == 'middle':
+            self.__init__()
+            return
+
+
+servo_motion = ServoMotion()
+
 speed = 0.5
 cur_color = 'green'
 
@@ -200,6 +291,16 @@ def shutdown():
         if request.form['shutdown'] == 'do_shutdown':
             os.system(b'/sbin/shutdown now')
     return Response(status=200)
+
+
+@app.route('/servo', methods=['POST'])
+def servo():
+    if request.method == 'POST':
+        direction = request.json['servo']
+        servo_motion(direction)
+        return Response(status=200)
+
+
 
 
 app.wsgi_app = ProxyFix(app.wsgi_app)

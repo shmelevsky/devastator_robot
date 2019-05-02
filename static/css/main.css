@@ -79,6 +79,60 @@ img {
 }
 
 
+
+[class^="btn"] {
+    background-color: Transparent;
+    background-repeat   :no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+}
+
+
+.container {position: relative;}
+.container .btn_right {
+    position: absolute;
+    bottom: 300px; /*your button position*/
+    right: 10px; /*your button position*/
+    height: 150px;
+    width: 200px;
+}
+
+
+.container .btn_left {
+    position: absolute;
+    bottom: 300px; /*your button position*/
+    left: 10px; /*your button position*/
+    height: 150px;
+    width: 200px;
+}
+
+.container .btn_top {
+    position: absolute;
+    top: 5px;
+    left: 370px;
+    height: 150px;
+    width: 200px;
+}
+
+.container .btn_bottom {
+    position: absolute;
+    left: 370px;
+    bottom: 10px;
+    height: 150px;
+    width: 200px;
+}
+
+.container .btn_center {
+    position: absolute;
+    left: 370px;
+    bottom: 300px;
+    height: 150px;
+    width: 200px;
+}
+
+
 body {
     background-color: darkgrey;
 }
+

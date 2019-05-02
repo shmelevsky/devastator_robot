@@ -8,8 +8,15 @@
   </head>
   <body onload="init()">
     <div id="web_dist" align="center">
-        <div><img id="video" alt="" src="http://10.7.10.20:8000/stream.mjpg"></div>
-        <!--<div><img id="video" alt="" src="/static/images/1234.jpg"></div>-->
+        <div class="container">
+<!--            <img id="video" alt="" src="/static/images/1234.jpg">-->
+            <img id="video" alt="" src="http://10.7.10.20:8000/stream.mjpg">
+            <button class="btn_right" onclick="servo_activate('right')">Button</button>
+            <button class="btn_left" onclick="servo_activate('left')">Button</button>
+            <button class="btn_top" onclick="servo_activate('up')">Button</button>
+            <button class="btn_bottom" onclick="servo_activate('down')">Button</button>
+            <button class="btn_center" onclick="servo_activate('middle')">Button</button>
+        </div>
         <div class="sensors" align="center">
             <div class="column" id="ping">ping: </div>
             <div class="column" id="distance">distanse:  </div>
