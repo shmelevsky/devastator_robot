@@ -17,13 +17,12 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 robot = Robot(left=(16, 12), right=(21, 20))
 led = RGBLED(red=27, green=22, blue=17)
-
-
 servoPIN_h = 8
 servoPIN_v = 25
-
 GPIO.setup(servoPIN_h, GPIO.OUT)
 GPIO.setup(servoPIN_v, GPIO.OUT)
+speed = 0.5
+cur_color = 'green'
 
 
 class ServoMotion:
@@ -106,12 +105,6 @@ class ServoMotion:
             return
 
 
-servo_motion = ServoMotion()
-
-speed = 0.5
-cur_color = 'green'
-
-
 def led_demo():
     for i in range(3):
         for n in range(101):
@@ -122,15 +115,6 @@ def led_demo():
         for n in reversed(range(101)):
             led.green = n / 100
             sleep(0.01)
-
-
-led_demo()
-led.green = 1
-
-pygame.init()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
 
 
 def joy():
@@ -166,11 +150,6 @@ def joy():
         sleep(0.01)
 
 
-tread = threading.Thread(name='joy', target=joy)
-tread.setDaemon(True)
-tread.start()
-
-
 def set_new_color():
     colors = {
         'red': (1, 0, 0),
@@ -201,6 +180,17 @@ def m_distance():
     distance = (time_elapsed * 34300) / 2
     return distance
 
+
+led_demo()
+led.green = 1
+servo_motion = ServoMotion()
+pygame.init()
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
+tread = threading.Thread(name='joy', target=joy)
+tread.setDaemon(True)
+tread.start()
 
 app = Flask(__name__)
 

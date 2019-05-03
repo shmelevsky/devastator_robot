@@ -14,6 +14,8 @@ img {
     border-radius: 30px;
     background-color: #88a198;
     border: 2px solid black;
+    outline: 0;
+    outline-offset: 0;
 }
 
 #speed {
@@ -82,53 +84,45 @@ img {
 
 [class^="btn"] {
     background-color: Transparent;
-    background-repeat   :no-repeat;
     border: none;
-    cursor:pointer;
-    overflow: hidden;
+    cursor: pointer;
+    height: 220px;
+    width: 270px;
+    outline: 0;
+    outline-offset: 0;
 }
 
 
 .container {position: relative;}
 .container .btn_right {
     position: absolute;
-    bottom: 300px; /*your button position*/
+    bottom: 252px; /*your button position*/
     right: 10px; /*your button position*/
-    height: 150px;
-    width: 200px;
 }
 
 
 .container .btn_left {
     position: absolute;
-    bottom: 300px; /*your button position*/
+    bottom: 252px; /*your button position*/
     left: 10px; /*your button position*/
-    height: 150px;
-    width: 200px;
 }
 
 .container .btn_top {
     position: absolute;
     top: 5px;
-    left: 370px;
-    height: 150px;
-    width: 200px;
+    left: 332px;
 }
 
 .container .btn_bottom {
     position: absolute;
-    left: 370px;
+    left: 332px;
     bottom: 10px;
-    height: 150px;
-    width: 200px;
 }
 
 .container .btn_center {
     position: absolute;
-    left: 370px;
-    bottom: 300px;
-    height: 150px;
-    width: 200px;
+    left: 332px;
+    bottom: 252px;
 }
 
 
