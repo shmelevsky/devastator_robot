@@ -1,13 +1,13 @@
 from flask import Flask, render_template, url_for, jsonify, request, Response
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 import subprocess
 import RPi.GPIO as GPIO
 from gpiozero import Robot, RGBLED
 from time import time, sleep
 import time
 import os
-import pygame
 import threading
+from inputs import get_gamepad
 
 
 GPIO.setmode(GPIO.BCM)
@@ -118,36 +118,40 @@ def led_demo():
 
 
 def joy():
-    updown = False
-    leftright = False
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYAXISMOTION:
-                position = float('%.2f' % event.value)
-                if event.axis == 3:
-                    if not leftright:
-                        if position != 0.0:
-                            updown = True
-                        if position < 0:
-                            robot.forward(speed=position*-1)
-                        elif position > 0:
-                            robot.backward(speed=position)
-                        elif position == 0.0:
-                            updown = False
-                            robot.stop()
-                elif event.axis == 0:
-                    if not updown:
-                        if position != 0.0:
-                            leftright = True
-                        if position < 0:
-                            robot.left(speed=position*-1)
-                        elif position > 0:
-                            robot.right(speed=position)
-                        elif position == 0.0:
-                            leftright = False
-                            robot.stop()
+    while 1:
+        events = get_gamepad()
+        for event in events:
+            if event.code == 'SYN_REPORT':
+                continue
+            if event.code == 'ABS_RZ':
+                if event.state in range(0,128):
+                    robot.forward(speed=1)
+                if event.state in range(129,256):
+                    robot.backward()
+                if event.state == 128:
+                    robot.stop()
+            if event.code == 'ABS_X':
+                if event.state in range(0,128):
+                    robot.left()
+                if event.state in range(129,256):
+                    robot.right()
+                if event.state == 127:
+                    robot.stop()
+            if event.code == 'ABS_HAT0X':
+                if event.state == -1:
+                    robot.left()
+                if event.state == 1:
+                    robot.right()
+                if event.state == 0:
+                    robot.stop()
+            if event.code == 'ABS_HAT0Y':
+                if event.state == -1:
+                    robot.forward()
+                if event.state == 1:
+                    robot.backward()
+                if event.state == 0:
+                    robot.stop()
 
-        sleep(0.01)
 
 
 def set_new_color():
@@ -160,7 +164,7 @@ def set_new_color():
     led.color = colors[cur_color]
 
 def ping_server():
-    cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  10.7.10.1']
+    cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  192.168.88.1']
     out = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ping = out.communicate()[1:][0].decode('UTF-8').split(':')[1]
     return ping
@@ -184,10 +188,6 @@ def m_distance():
 led_demo()
 led.green = 1
 servo_motion = ServoMotion()
-pygame.init()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
 tread = threading.Thread(name='joy', target=joy)
 tread.setDaemon(True)
 tread.start()
