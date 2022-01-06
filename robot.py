@@ -8,6 +8,7 @@ import time
 import os
 import threading
 from inputs import get_gamepad
+from ina219 import INA219
 
 
 GPIO.setmode(GPIO.BCM)
@@ -184,6 +185,16 @@ def m_distance():
     distance = (time_elapsed * 34300) / 2
     return distance
 
+SHUNT_OHMS = 0.1
+ina = INA219(SHUNT_OHMS)
+ina.configure()
+
+def voltage(): 
+	return "%.3f V" % ina.supply_voltage()
+
+def current():
+    return "%.3f mA" % ina.current() 
+
 
 led_demo()
 led.green = 1
@@ -233,13 +244,26 @@ def stop():
 @app.route('/get_ping', methods=['POST'])
 def get_ping():
     if request.method == 'POST':
-        return jsonify(ping_server())
+        return jsonify('%.3f ms' % float(ping_server()))
 
 
 @app.route('/get_distance', methods=['POST'])
 def get_distance():
     if request.method == 'POST':
-        return jsonify(int(m_distance()))
+        return jsonify('%.3f cm' % float(m_distance()))
+
+
+@app.route('/get_voltage', methods=['POST'])
+def get_voltage():
+    if request.method == 'POST':
+        return jsonify(voltage())
+
+
+@app.route('/get_current', methods=['POST'])
+def get_current():
+    if request.method == 'POST':
+        return jsonify(current())
+
 
 
 @app.route('/transmisson', methods=['POST', 'GET'])

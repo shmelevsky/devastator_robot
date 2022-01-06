@@ -19,6 +19,8 @@ function init() {
     setInterval(function() {
         get_data('/get_ping', 'ping');
         get_data('/get_distance', 'distance' )
+        get_data('/get_current', 'current' )
+        get_data('/get_voltage', 'voltage' )
     }, 2000);
 
 
@@ -54,7 +56,7 @@ function get_data(url,selector_id) {
     xmlhttp2.onload = function () {
         if (xmlhttp2.status === 200) {
             var response = JSON.parse(xmlhttp2.responseText);
-            document.getElementById(selector_id).innerHTML = selector_id+": "+response;
+            document.getElementById(selector_id).innerHTML = response;
         } else if (xmlhttp2.status !== 200) {
             console.log('Request failed.  Returned status of ' + xmlhttp2.status);
         }

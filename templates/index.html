@@ -10,7 +10,7 @@
     <div id="web_dist" align="center">
         <div class="container">
 <!--            <img id="video" alt="" src="/static/images/1234.jpg">-->
-            <img id="video" alt="" src="http://192.168.88.241:8000/stream.mjpg">
+	    <img id="video" alt="" src="http://192.168.88.241:8000/stream.mjpg">
             <button class="btn_right" onclick="servo_activate('right')"></button>
             <button class="btn_left" onclick="servo_activate('left')"></button>
             <button class="btn_top" onclick="servo_activate('up')"></button>
@@ -18,8 +18,12 @@
             <button class="btn_center" onclick="servo_activate('middle')"></button>
         </div>
         <div class="sensors" align="center">
-            <div class="column" id="ping">ping: </div>
-            <div class="column" id="distance">distanse:  </div>
+            <div class="column" id="ping"></div>
+            <div class="column" id="distance"></div>
+        </div>
+        <div class="sensors" align="center">
+            <div class="column" id="voltage"></div>
+            <div class="column" id="current"></div>
         </div>
     </div>
     <div class="controls_view">

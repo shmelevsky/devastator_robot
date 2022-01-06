@@ -10,6 +10,7 @@ def read():
     ina.configure()
 
     print("Bus Voltage: %.3f V" % ina.voltage())
+    print("Bus supply Voltage: %.3f V" % ina.supply_voltage()) # This is the sum of the bus voltage and shunt voltage
     try:
         print("Bus Current: %.3f mA" % ina.current())
         print("Power: %.3f mW" % ina.power())
