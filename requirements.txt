@@ -1,4 +1,6 @@
 Flask==1.0.3
 gpiozero==1.5.1
-pygame==1.9.6
 RPi.GPIO==0.6.5
+
+Werkzeug~=2.0.2
+inputs~=0.5

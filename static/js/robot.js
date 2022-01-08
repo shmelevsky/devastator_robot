@@ -14,6 +14,24 @@ function init() {
     var button_backward = document.getElementById("backward");
     button_backward.addEventListener("touchstart", backward, false);
     button_backward.addEventListener("touchend", stop, false);
+
+
+    var servo_right = document.getElementById("servo_r");
+    servo_right.addEventListener("touchstart", servo_r, false);
+    servo_right.addEventListener("touchend", servo_s, false);
+
+    var servo_left = document.getElementById("servo_l");
+    servo_left.addEventListener("touchstart", servo_l, false);
+    servo_left.addEventListener("touchend", servo_s, false);
+
+    var servo_up = document.getElementById("servo_u");
+    servo_up.addEventListener("touchstart", servo_u, false);
+    servo_up.addEventListener("touchend", servo_s, false);
+
+    var servo_down = document.getElementById("servo_d");
+    servo_down.addEventListener("touchstart", servo_d, false);
+    servo_down.addEventListener("touchend", servo_s, false);
+
     get_cur_speed();
     get_cur_color();
     setInterval(function() {
@@ -44,9 +62,35 @@ function backward() {
 function stop() {
     xmlhttp.open("GET","/stop", true);
     xmlhttp.send();
-
-
 }
+
+
+function servo_r() {
+    xmlhttp.open("GET","/servo_r", true);
+    xmlhttp.send();
+}
+
+function servo_l() {
+    xmlhttp.open("GET","/servo_l", true);
+    xmlhttp.send();
+}
+
+function servo_u() {
+    xmlhttp.open("GET","/servo_u", true);
+    xmlhttp.send();
+}
+
+function servo_d() {
+    xmlhttp.open("GET","/servo_d", true);
+    xmlhttp.send();
+}
+
+function servo_s() {
+    xmlhttp.open("GET","/servo_s", true);
+    xmlhttp.send();
+}
+
+
 
 function get_data(url,selector_id) {
     var xmlhttp2;
@@ -133,12 +177,12 @@ function get_cur_color() {
     xhtp.send();
 }
 
-function servo_activate(position) {
-    var xmlhttp;
-    xmlhttp = new  XMLHttpRequest();
-    xmlhttp.open('POST', '/servo', true);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    xmlhttp.send(JSON.stringify({'servo': position}));
-};
+// function servo_activate(position) {
+//     var xmlhttp;
+//     xmlhttp = new  XMLHttpRequest();
+//     xmlhttp.open('POST', '/servo', true);
+//     xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+//     xmlhttp.send(JSON.stringify({'servo': position}));
+// };
 
 

@@ -9,6 +9,10 @@ import os
 import threading
 from inputs import get_gamepad
 from ina219 import INA219
+from board import SCL, SDA
+import busio
+from adafruit_motor import servo
+from adafruit_pca9685 import PCA9685
 
 
 GPIO.setmode(GPIO.BCM)
@@ -18,93 +22,59 @@ GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 robot = Robot(left=(16, 12), right=(21, 20))
 led = RGBLED(red=27, green=22, blue=17)
-servoPIN_h = 8
-servoPIN_v = 25
-GPIO.setup(servoPIN_h, GPIO.OUT)
-GPIO.setup(servoPIN_v, GPIO.OUT)
 speed = 0.5
 cur_color = 'green'
+SHUNT_OHMS = 0.1
+ina = INA219(SHUNT_OHMS)
+ina.configure()
 
 
 class ServoMotion:
-    positions_horizontal = {
-        1: 2.5,
-        2: 4.5,
-        3: 7,
-        4: 9.5,
-        5: 11.5,
-    }
-
-    positions_vertical = {
-        1: 4,
-        2: 7,
-        3: 8.7,
-        4: 9.8
-    }
 
     def __init__(self):
-        self.cur_h_position = 3
-        self.cur_v_position = 3
-        servo_v = GPIO.PWM(servoPIN_v, 50)
-        servo_v.start(self.positions_vertical[self.cur_v_position])
-        sleep(0.3)
-        servo_v.stop()
-        del servo_v
-        servo_h = GPIO.PWM(servoPIN_h, 50)
-        servo_h.start(self.positions_horizontal[self.cur_h_position])
-        sleep(0.3)
-        servo_h.stop()
-        del servo_h
+        i2c = busio.I2C(SCL, SDA)
+        self.pca = PCA9685(i2c, address=0x41)
+        self.pca.frequency = 50
+        self.servo_h = servo.Servo(self.pca.channels[7])
+        self.servo_v = servo.Servo(self.pca.channels[12])
+        self.servo_h.set_pulse_width_range(500, 2300)
+        self.servo_v.set_pulse_width_range(550, 1620)
+        self.servo_h.angle = 90
+        self.servo_v.angle = 120
+        self.stop = False
 
-    def change_position(self, button_direction):
-        if button_direction == 'right':
-            if self.cur_h_position == 1:
-                return
-            else:
-                self.cur_h_position -= 1
-                servo_h = GPIO.PWM(servoPIN_h, 50)
-                servo_h.start(self.positions_horizontal[self.cur_h_position])
-                sleep(0.3)
-                servo_h.stop()
-                del servo_h
-                return
-        elif button_direction == 'left':
-            if self.cur_h_position == 5:
-                return
-            else:
-                self.cur_h_position += 1
-                servo_h = GPIO.PWM(servoPIN_h, 50)
-                servo_h.start(self.positions_horizontal[self.cur_h_position])
-                sleep(0.3)
-                servo_h.stop()
-                del servo_h
-                return
-        elif button_direction == 'up':
-            if self.cur_v_position == 1:
-                return
-            else:
-                self.cur_v_position -= 1
-                servo_v = GPIO.PWM(servoPIN_v, 50)
-                servo_v.start(self.positions_vertical[self.cur_v_position])
-                sleep(0.3)
-                servo_v.stop()
-                del servo_v
-                return
-        elif button_direction == 'down':
-            if self.cur_v_position == 4:
-                return
-            else:
-                self.cur_v_position += 1
-                servo_v = GPIO.PWM(servoPIN_v, 50)
-                servo_v.start(self.positions_vertical[self.cur_v_position])
-                sleep(0.3)
-                servo_v.stop()
-                del servo_v
-                return
-        elif button_direction == 'middle':
-            self.__init__()
-            return
 
+    def left(self):
+        threading.Thread(target=self.__make_thread, daemon=True, args=('left',)).start()
+
+    def right(self):
+        threading.Thread(target=self.__make_thread, daemon=True, args=('right',)).start()
+
+    def up(self):
+        threading.Thread(target=self.__make_thread, daemon=True, args=('up',)).start()
+
+    def down(self):
+        threading.Thread(target=self.__make_thread, daemon=True, args=('down',)).start()
+
+    def __make_thread(self, direction):
+        if direction in ['right', 'left']:
+            serv = self.servo_h
+        else:
+            serv = self.servo_v
+
+        if direction in ('right', 'down'):
+            for angle in range(serv, 180):
+                serv.angle = angle
+                if self.stop:
+                    break
+        if direction in ('left', 'dup'):
+            for angle in range(serv):
+                serv.angle = serv - 1
+                if self.stop:
+                    break
+
+
+servo_motion = ServoMotion()
 
 def led_demo():
     for i in range(3):
@@ -154,7 +124,6 @@ def joy():
                     robot.stop()
 
 
-
 def set_new_color():
     colors = {
         'red': (1, 0, 0),
@@ -163,6 +132,7 @@ def set_new_color():
         'yellow': (1, 1, 0)
     }
     led.color = colors[cur_color]
+
 
 def ping_server():
     cmd = ['/usr/bin/fping  -q -B  1 -C 1 -p 500 -r 5 -t 500  192.168.88.1']
@@ -185,20 +155,20 @@ def m_distance():
     distance = (time_elapsed * 34300) / 2
     return distance
 
-SHUNT_OHMS = 0.1
-ina = INA219(SHUNT_OHMS)
-ina.configure()
 
 def voltage(): 
-	return "%.3f V" % ina.supply_voltage()
+    return "%.3f V" % ina.supply_voltage()
+
 
 def current():
-    return "%.3f mA" % ina.current() 
+    return "%.3f mA" % ina.current()
 
 
-led_demo()
+tr = threading.Thread(name='led_demo', target=led_demo())
+tr.setDaemon(True)
+tr.start()
+
 led.green = 1
-servo_motion = ServoMotion()
 tread = threading.Thread(name='joy', target=joy)
 tread.setDaemon(True)
 tread.start()
@@ -265,7 +235,6 @@ def get_current():
         return jsonify(current())
 
 
-
 @app.route('/transmisson', methods=['POST', 'GET'])
 def transmission():
     global speed
@@ -307,15 +276,36 @@ def shutdown():
     return Response(status=200)
 
 
-@app.route('/servo', methods=['POST'])
-def servo():
-    if request.method == 'POST':
-        direction = request.json['servo']
-        servo_motion.change_position(direction)
-        return Response(status=200)
+@app.route('/servo_l')
+def servo_l():
+    servo_motion.stop = False
+    servo_motion.left()
+    return Response(status=200)
 
 
+@app.route('/servo_r')
+def servo_r():
+    servo_motion.stop = False
+    servo_motion.right()
+    return Response(status=200)
 
+@app.route('/servo_u')
+def servo_u():
+    servo_motion.stop = False
+    servo_motion.up()
+    return Response(status=200)
+
+@app.route('/servo_d')
+def servo_r():
+    servo_motion.stop = False
+    servo_motion.down()
+    return Response(status=200)
+
+
+@app.route('/servo_s')
+def servo_s():
+    servo_motion.stop = True
+    return Response(status=200)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 

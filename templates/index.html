@@ -11,10 +11,13 @@
         <div class="container">
 <!--            <img id="video" alt="" src="/static/images/1234.jpg">-->
 	    <img id="video" alt="" src="http://192.168.88.241:8000/stream.mjpg">
-            <button class="btn_right" onclick="servo_activate('right')"></button>
-            <button class="btn_left" onclick="servo_activate('left')"></button>
-            <button class="btn_top" onclick="servo_activate('up')"></button>
-            <button class="btn_bottom" onclick="servo_activate('down')"></button>
+            <button class="btn_right"  id ="servo_r"></button>
+            <button class="btn_left" id="servo_l"></button>
+            <button class="btn_top" id="servo_u"></button>
+            <button class="btn_bottom" id="servo_d"></button>
+{#            <button class="btn_center" onclick="servo_activate('middle')"></button>#}
+
+
             <button class="btn_center" onclick="servo_activate('middle')"></button>
         </div>
         <div class="sensors" align="center">
