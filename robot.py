@@ -38,7 +38,7 @@ class ServoMotion:
         self.servo_h = servo.Servo(self.pca.channels[7])
         self.servo_v = servo.Servo(self.pca.channels[12])
         self.servo_h.set_pulse_width_range(500, 2300)
-        self.servo_v.set_pulse_width_range(550, 1620)
+        self.servo_v.set_pulse_width_range(560, 1620)
         self.servo_h.angle = 90
         self.servo_v.angle = 120
         self.stop = False
@@ -62,14 +62,17 @@ class ServoMotion:
         else:
             serv = self.servo_v
 
-        if direction in ('right', 'down'):
-            for angle in range(serv, 180):
+        if direction in ('left', 'down'):
+            for angle in range(int(serv.angle), 180):
                 serv.angle = angle
+                sleep(0.01)
                 if self.stop:
                     break
-        if direction in ('left', 'dup'):
-            for angle in range(serv):
-                serv.angle = serv - 1
+        if direction in ('right', 'up'):
+            cur_position = int(serv.angle) 
+            for angle in range(cur_position):
+                serv.angle = cur_position - angle
+                sleep(0.01)
                 if self.stop:
                     break
 
@@ -296,7 +299,7 @@ def servo_u():
     return Response(status=200)
 
 @app.route('/servo_d')
-def servo_r():
+def servo_d():
     servo_motion.stop = False
     servo_motion.down()
     return Response(status=200)
@@ -306,6 +309,14 @@ def servo_r():
 def servo_s():
     servo_motion.stop = True
     return Response(status=200)
+
+@app.route('/servo_m')
+def servo_m():
+    servo_motion.servo_h.angle = 90
+    servo_motion.servo_v.angle = 120
+    return Response(status=200)
+
+
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 

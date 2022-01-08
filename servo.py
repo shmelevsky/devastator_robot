@@ -60,10 +60,10 @@ for i in range(180):
 
 
 # You can also specify the movement fractionally.
-fraction = 0.0
-while fraction < 1.0:
-    servo7.fraction = fraction
-    fraction += 0.01
-    time.sleep(0.03)
+#fraction = 0.0
+#while fraction < 1.0:
+#    servo7.fraction = fraction
+#    fraction += 0.01
+#    time.sleep(0.03)
 
 pca.deinit()

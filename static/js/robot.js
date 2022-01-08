@@ -90,6 +90,12 @@ function servo_s() {
     xmlhttp.send();
 }
 
+function servo_m() {
+    xmlhttp.open("GET","/servo_m",true);
+    xmlhttp.send();
+}
+
+
 
 
 function get_data(url,selector_id) {
@@ -176,13 +182,4 @@ function get_cur_color() {
     };
     xhtp.send();
 }
-
-// function servo_activate(position) {
-//     var xmlhttp;
-//     xmlhttp = new  XMLHttpRequest();
-//     xmlhttp.open('POST', '/servo', true);
-//     xmlhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-//     xmlhttp.send(JSON.stringify({'servo': position}));
-// };
-
 
