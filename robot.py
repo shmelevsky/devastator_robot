@@ -38,7 +38,7 @@ class ServoMotion:
         self.servo_h = servo.Servo(self.pca.channels[7])
         self.servo_v = servo.Servo(self.pca.channels[12])
         self.servo_h.set_pulse_width_range(500, 2300)
-        self.servo_v.set_pulse_width_range(560, 1620)
+        self.servo_v.set_pulse_width_range(570, 1620)
         self.servo_h.angle = 90
         self.servo_v.angle = 120
         self.stop = False
