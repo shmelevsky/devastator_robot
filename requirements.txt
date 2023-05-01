@@ -1,4 +1,4 @@
-Flask==1.0.3
+Flask==2.3.2
 gpiozero==1.5.1
 RPi.GPIO==0.6.5
 
