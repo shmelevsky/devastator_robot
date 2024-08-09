@@ -38,9 +38,9 @@ class ServoMotion:
         self.servo_h = servo.Servo(self.pca.channels[7])
         self.servo_v = servo.Servo(self.pca.channels[12])
         self.servo_h.set_pulse_width_range(500, 2300)
-        self.servo_v.set_pulse_width_range(570, 1620)
+        self.servo_v.set_pulse_width_range(520, 1730)
         self.servo_h.angle = 90
-        self.servo_v.angle = 120
+        self.servo_v.angle = 140
         self.stop = False
 
 
@@ -65,14 +65,14 @@ class ServoMotion:
         if direction in ('left', 'down'):
             for angle in range(int(serv.angle), 180):
                 serv.angle = angle
-                sleep(0.01)
+                sleep(0.005)
                 if self.stop:
                     break
         if direction in ('right', 'up'):
             cur_position = int(serv.angle) 
             for angle in range(cur_position):
                 serv.angle = cur_position - angle
-                sleep(0.01)
+                sleep(0.005)
                 if self.stop:
                     break
 
@@ -313,7 +313,7 @@ def servo_s():
 @app.route('/servo_m')
 def servo_m():
     servo_motion.servo_h.angle = 90
-    servo_motion.servo_v.angle = 120
+    servo_motion.servo_v.angle = 140
     return Response(status=200)
 
 
